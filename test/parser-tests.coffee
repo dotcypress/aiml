@@ -26,6 +26,10 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   </template>
                 </category>
               </topic>
+              <category>
+                <pattern>do you like *</pattern>
+                <template><star/>? Maybe.</template>
+              </category>
             </aiml>"
 
 describe 'AIML parser', () ->
@@ -51,7 +55,7 @@ describe 'AIML parser', () ->
   it 'should parse simple category', (done) ->
     parse xml, (err, topics) ->
       topic = topics[0]
-      topic.categories.should.have.length 1
+      topic.categories.should.have.length 2
       category = topic.categories[0]
       category.pattern.should.equal 'what is your name'
       category.that.should.equal 'bot'
@@ -68,4 +72,11 @@ describe 'AIML parser', () ->
     parse xml, (err, topics) ->
       category = topics[1].categories[0]
       category.templates[0].should.equal 'My name is {{bot.name}} and i prefer F#.'
+      done()
+
+  it 'should parse stars', (done) ->
+    parse xml, (err, topics) ->
+      category = topics[0].categories[1]
+      category.pattern.should.equal 'do you like *'
+      category.templates[0].should.equal '{{star}}? Maybe.'
       done()

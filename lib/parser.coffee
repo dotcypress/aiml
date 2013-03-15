@@ -69,6 +69,7 @@ parseMixedTemplateContentContainer = (node) ->
 
 parseTemplateExpression = (node) ->
   return "{{bot.#{node.attributes.name}}}" if node.name is 'bot'
+  return "{{star}}" if node.name is 'star'
   node.text
 
 trim = (string) -> string.replace /^\s+|\s+$/g, ''

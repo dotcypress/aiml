@@ -9,6 +9,10 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                 <that>bot</that>
                 <template>My name is <bot name=\"name\"/></template>
               </category>
+              <category>
+                <pattern>do you like *</pattern>
+                <template><star/>? Maybe.</template>
+              </category>
               <topic name=\"Development\">
                <category>
                   <pattern><bot name=\"name\"/>, how are yoy</pattern>
@@ -19,7 +23,7 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   <template>
                     <random>
                       <li>My name is <bot name=\"name\"/> and i prefer F#.</li>
-                      <li>Only Haskell</li>
+                      <li>Only Haskell, <get name=\"dude\"/></li>
                       <li>Maybe OCaml</li>
                     </random>
                   </template>
@@ -42,14 +46,26 @@ describe 'AIML engine', () ->
         engine = new AiEngine topics, {name: 'Jonny'}
         done()
 
+    it 'should not responce for unknown message', (done) ->
+      engine.reply {name: 'Lisa'}, 'LOL', (err, reply) ->
+        should.not.exist err
+        should.not.exist reply
+        done()
+
     it 'should responce to exact message', (done) ->
-      engine.reply {name: 'Jonny'}, 'what is your name', (err, reply) ->
+      engine.reply {name: 'Lisa'}, 'what is your name', (err, reply) ->
         should.exist reply
         reply.should.to.be.equal 'My name is Jonny'
         done()
 
-    it.skip 'should responce', (done) ->
-      engine.reply {name: 'Jonny'}, 'Hey, what is your name?', (err, reply) ->
+    it 'should responce to not exact message', (done) ->
+      engine.reply {name: 'Lisa'}, 'Hey, what is your name?', (err, reply) ->
         should.exist reply
         reply.should.to.be.equal 'My name is Jonny'
+        done()
+
+    it 'should responce with context', (done) ->
+      engine.reply {name: 'Lisa'}, 'Dude, do you like bananas', (err, reply) ->
+        should.exist reply
+        reply.should.to.be.equal 'bananas? Maybe.'
         done()

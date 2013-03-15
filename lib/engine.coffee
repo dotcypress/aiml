@@ -12,14 +12,21 @@ class AiEngine
   getCurrentTopic: () ->
     _.find @topics, (topic) => topic.name is @currentTopic
 
-  findTemplate: (message) ->
+  findCategory: (message) ->
     topic = @getCurrentTopic()
-    category = _.find topic.categories, (category) -> category.pattern is message
-    category.templates[0]
+    _.find topic.categories, (category) ->
+      # TODO: cache regex
+      re = new RegExp (category.pattern.replace '*', '(.+)'), "i"
+      re.test message
 
   reply: (author, message, cb) ->
-    template = @findTemplate message
-    responce = mustache.render template, @view
+    category = @findCategory message
+    return cb null if not category
+
+    re = new RegExp (category.pattern.replace '*', '(.+)'), "i"
+    match = re.exec message
+    @view.star = match[1]
+    responce = mustache.render category.templates[0], @view
     cb null, responce
 
 module.exports = AiEngine

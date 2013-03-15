@@ -13,7 +13,7 @@ parse = (xml, cb) ->
     return cb 'Unsupported file' if dom.name is not 'aiml'
     topics = parseTopics dom
     topCategories = parseCategories dom
-    topics.unshift { name: 'Default', categories: topCategories } if topCategories.length > 0
+    topics.unshift { name: null, categories: topCategories } if topCategories.length > 0
     cb null, topics
 
 parseFiles = (files, cb) ->
@@ -51,18 +51,18 @@ parseCategory = (node) ->
 
 parseMixedPatternExpression = (node) ->
   return undefined if not node
-  trim _.reduce node.children, ((acc, next) -> "#{acc}#{parsePatternExpression next} "), ''
+  _.reduce node.children, ((acc, next) -> "#{acc}#{parsePatternExpression next}"), ''
+
+parsePatternExpression = (node) ->
+  return "{{bot.#{node.attributes.name}}}" if node.name is 'bot'
+  node.text
 
 parseMixedTemplateContentContainer = (node) ->
   return undefined if not node
-  trim _.reduce node.children, ((acc, next) -> "#{acc}#{parseTemplateExpression next} "), ''
-
-parsePatternExpression = (node) ->
-  # TODO: implement
-  node.text
+  _.reduce node.children, ((acc, next) -> "#{acc}#{parseTemplateExpression next}"), ''
 
 parseTemplateExpression = (node) ->
-  # TODO: implement
+  return "{{bot.#{node.attributes.name}}}" if node.name is 'bot'
   node.text
 
 trim = (string) -> string.replace /^\s+|\s+$/g, ''

@@ -16,8 +16,18 @@ parse = (xml, cb) ->
     topics.unshift { name: 'Default', categories: topCategories } if topCategories.length > 0
     cb null, topics
 
-parseFile = (file, cb) ->
-  cb null, null
+parseFiles = (files, cb) ->
+  files = [files] if not _.isArray files
+
+  parseTasks = _.map files, (file) ->
+    (cb) ->
+      fs.readFile file, 'utf8', (err, data) ->
+        return cb err if err
+        parse data, cb
+
+  async.parallel parseTasks, (err, results) ->
+    return cb err if err
+    cb null, _.flatten results, true
 
 parseTopics = (node) ->
   topics = _.filter node.children, (child) -> child.name is 'topic'
@@ -58,4 +68,4 @@ parseTemplateExpression = (node) ->
 trim = (string) -> string.replace /^\s+|\s+$/g, ''
 
 module.exports.parse = parse
-module.exports.parseFile = parseFile
+module.exports.parseFiles = parseFiles

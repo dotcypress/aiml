@@ -1,6 +1,6 @@
 should = require('chai').should()
 parse = require('./../index').parse
-parseFile = require('./../index').parseFile
+parseFiles = require('./../index').parseFiles
 
 describe 'AIML parser', () ->
 

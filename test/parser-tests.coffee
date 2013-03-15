@@ -1,6 +1,7 @@
 should = require('chai').should()
 parse = require('./../index').parse
 parseFiles = require('./../index').parseFiles
+parseDir = require('./../index').parseDir
 
 xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
             <aiml version=\"1.0\">

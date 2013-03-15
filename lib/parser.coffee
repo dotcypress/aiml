@@ -29,6 +29,12 @@ parseFiles = (files, cb) ->
     return cb err if err
     cb null, _.flatten results, true
 
+parseDir = (dir, cb) ->
+  fs.readdir dir, (err, files) ->
+    return cb err if err
+    files = _.map files, (file) -> path.join dir, file
+    parseFiles files, cb
+
 parseTopics = (node) ->
   topics = _.filter node.children, (child) -> child.name is 'topic'
   _.map topics, parseTopic
@@ -69,3 +75,4 @@ trim = (string) -> string.replace /^\s+|\s+$/g, ''
 
 module.exports.parse = parse
 module.exports.parseFiles = parseFiles
+module.exports.parseDir = parseDir

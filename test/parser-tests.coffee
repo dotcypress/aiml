@@ -2,8 +2,7 @@ should = require('chai').should()
 parse = require('./../index').parse
 parseFiles = require('./../index').parseFiles
 
-describe 'AIML parser', () ->
-  xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
             <aiml version=\"1.0\">
               <category>
                 <pattern>what is your name</pattern>
@@ -27,6 +26,8 @@ describe 'AIML parser', () ->
                 </category>
               </topic>
             </aiml>"
+
+describe 'AIML parser', () ->
 
   it 'should not parse empty string', (done) ->
     parse '', (err, topics) ->

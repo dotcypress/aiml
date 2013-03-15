@@ -22,7 +22,8 @@
     "coffee-script": "~1.6.1",
     "underscore": "~1.4.4",
     "async": "~0.2.6",
-    "dom-js": "~0.0.9"
+    "dom-js": "~0.0.9",
+    "mustache": "~0.7.2"
   },
   "devDependencies": {
     "mocha": "~1.8.1",

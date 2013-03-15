@@ -6,7 +6,7 @@ DomJS = require("dom-js").DomJS
 engine = require './engine'
 
 parse = (xml, cb) ->
-  return cb 'Xml not defined' if not xml
+  return cb 'Xml is not defined' if not xml
   domjs = new DomJS()
   domjs.parse xml, (err, dom) ->
     return cb err if err

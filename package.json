@@ -1,0 +1,39 @@
+{
+  "name": "aiml",
+  "version": "0.0.1",
+  "description": "Artificial Intelligence Markup Language lib for Node.js",
+  "keywords": [
+    "aiml",
+    "ai",
+    "parser"
+  ],
+  "homepage": "https://github.com/dotCypress/aiml",
+  "bugs": "https://github.com/dotCypress/aiml/issues",
+  "author": "Vitaly Domnikov <dotcypress@gmail.com>",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dotCypress/aiml.git"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec --compilers coffee:coffee-script"
+  },
+  "dependencies": {
+    "coffee-script": "~1.6.1",
+    "underscore": "~1.4.4",
+    "async": "~0.2.6",
+    "dom-js": "~0.0.9"
+  },
+  "devDependencies": {
+    "mocha": "~1.8.1",
+    "chai": "~1.5.0"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
+}

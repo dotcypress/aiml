@@ -6,7 +6,7 @@ DomJS = require("dom-js").DomJS
 engine = require './engine'
 
 parse = (xml, cb) ->
-  return cb 'Xml is not defined' if not xml
+  return cb 'Xml is not defined' unless xml
   domjs = new DomJS()
   domjs.parse xml, (err, dom) ->
     return cb err if err
@@ -17,7 +17,7 @@ parse = (xml, cb) ->
     cb null, topics
 
 parseFiles = (files, cb) ->
-  files = [files] if not _.isArray files
+  files = [files] unless _.isArray files
 
   parseTasks = _.map files, (file) ->
     (cb) ->
@@ -55,13 +55,13 @@ parseCategories = (node) ->
 parseCategory = (node) ->
   pattern = _.find node.children, (child) -> child.name is 'pattern'
   that = _.find node.children, (child) -> child.name is 'that'
-  templates = _.filter node.children, (child) -> child.name is 'template'
+  template = _.find node.children, (child) -> child.name is 'template'
   pattern: parseMixedPatternExpression pattern
   that: parseMixedPatternExpression that if that
-  templates: _.map templates, parseMixedTemplateContentContainer
+  template: parseMixedTemplateContentContainer template
 
 parseMixedPatternExpression = (node) ->
-  return undefined if not node
+  return undefined unless node
   _.reduce node.children, ((acc, next) -> "#{acc}#{parsePatternExpression next}"), ''
 
 parsePatternExpression = (node) ->
@@ -69,7 +69,7 @@ parsePatternExpression = (node) ->
   node.text
 
 parseMixedTemplateContentContainer = (node) ->
-  return undefined if not node
+  return undefined unless node
   trim _.reduce node.children, ((acc, next) -> "#{acc}#{parseTemplateExpression next}"), ''
 
 parseTemplateExpression = (node) ->

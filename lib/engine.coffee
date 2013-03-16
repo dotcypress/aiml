@@ -5,14 +5,13 @@ mustache = require 'mustache'
 class AiEngine
 
   constructor: (@roomName, @topics, botData) ->
-    throw "Topics not found" if not @topics
-    throw "Room name is undefined not found" if not @roomName
+    throw "Topics not found" unless @topics
+    throw "Room name is undefined not found" unless @roomName
     @currentTopic = null
     @view = {bot: botData}
-    _.forEach @topics, (topic) =>
-      _.forEach topic.categories, (category) =>
+    _.each @topics, (topic) =>
+      _.each topic.categories, (category) =>
         category["room:#{@roomName}"] = new RegExp (category.pattern.replace '*', '(.*)'), "i"
-
 
   getCurrentTopic: () ->
     _.find @topics, (topic) => topic.name is @currentTopic
@@ -23,10 +22,10 @@ class AiEngine
 
   reply: (authorData, message, cb) ->
     category = @findCategory message
-    return cb null if not category
+    return cb null unless category
     match = category["room:#{@roomName}"].exec message
     @view.star = match[1] if match and match.length > 0
-    responce = mustache.render category.templates[0], @view
+    responce = mustache.render category.template, @view
     cb null, responce
 
 module.exports = AiEngine

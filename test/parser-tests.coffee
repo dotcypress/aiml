@@ -59,7 +59,7 @@ describe 'AIML parser', () ->
       category = topic.categories[0]
       category.pattern.should.equal 'what is your name'
       category.that.should.equal 'bot'
-      category.templates[0].should.equal 'My name is Jonny.'
+      category.template.should.equal 'My name is Jonny.'
       done()
 
   it 'should parse bot predicate in pattern', (done) ->
@@ -71,12 +71,12 @@ describe 'AIML parser', () ->
   it 'should parse bot predicate in templates', (done) ->
     parse xml, (err, topics) ->
       category = topics[1].categories[0]
-      category.templates[0].should.equal 'My name is {{bot.name}} and i prefer F#.'
+      category.template.should.equal 'My name is {{bot.name}} and i prefer F#.'
       done()
 
   it 'should parse stars', (done) ->
     parse xml, (err, topics) ->
       category = topics[0].categories[1]
       category.pattern.should.equal 'do you like *'
-      category.templates[0].should.equal '{{star}}? Maybe.'
+      category.template.should.equal '{{star}}? Maybe.'
       done()

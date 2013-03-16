@@ -24,7 +24,7 @@ Engine constructor: `var engine = new aiml.AiEngine(roomName, topics, botData)`
 #### Parameters
 
 * `roomName` - (required) name of chat room.
-* `topics` - (required) array of topics(parser result).
+* `topics` - (required) array of topics(parser results).
 * `botData` - (optional) bot metadata (name, version, gender, etc.).
 
 Main awesome function: `engine.reply(authorData, message, callback)`
@@ -33,7 +33,7 @@ Main awesome function: `engine.reply(authorData, message, callback)`
 
 * `authorData` - (required) message author metadata (name, age, etc.).
 * `message` - (required) just message.
-* `callback` - (optional) classic js callback, nothing special: ).
+* `callback` - (required) classic js callback, nothing special: ).
 
 #### Sample
 

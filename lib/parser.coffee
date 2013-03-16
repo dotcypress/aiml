@@ -27,7 +27,12 @@ parseFiles = (files, cb) ->
 
   async.parallel parseTasks, (err, results) ->
     return cb err if err
-    cb null, _.flatten results, true
+    all = _.flatten results, true
+    merged = _.groupBy all, 'name'
+    result = _.map merged, (arr) ->
+      name: arr[0].name
+      categories: _.reduce arr, ((acc, next) ->  acc.concat next.categories), []
+    cb null, result
 
 parseDir = (dir, cb) ->
   fs.readdir dir, (err, files) ->
@@ -65,11 +70,13 @@ parsePatternExpression = (node) ->
 
 parseMixedTemplateContentContainer = (node) ->
   return undefined if not node
-  _.reduce node.children, ((acc, next) -> "#{acc}#{parseTemplateExpression next}"), ''
+  trim _.reduce node.children, ((acc, next) -> "#{acc}#{parseTemplateExpression next}"), ''
 
 parseTemplateExpression = (node) ->
-  return "{{bot.#{node.attributes.name}}}" if node.name is 'bot'
-  return "{{star}}" if node.name is 'star'
+  if node.name
+    return "{{bot.#{node.attributes.name}}}" if node.name is 'bot'
+    return "{{star}}" if node.name is 'star'
+    return ''
   node.text
 
 trim = (string) -> string.replace /^\s+|\s+$/g, ''

@@ -16,7 +16,7 @@
     "url": "git://github.com/dotCypress/aiml.git"
   },
   "scripts": {
-    "test": "mocha --reporter spec --compilers coffee:coffee-script"
+    "test": "mocha --reporter spec --compilers coffee:coffee-script -t 10000"
   },
   "dependencies": {
     "coffee-script": "~1.6.1",

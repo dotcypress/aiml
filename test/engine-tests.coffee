@@ -5,7 +5,7 @@ parse = require('./../index').parse
 xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
             <aiml version=\"1.0\">
               <category>
-                <pattern>what is your name</pattern>
+                <pattern>what is your Name</pattern>
                 <that>bot</that>
                 <template>My name is <bot name=\"name\"/></template>
               </category>
@@ -33,8 +33,12 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 
 describe 'AIML engine', () ->
 
-  it 'should throw error without topics', (done) ->
+  it 'should throw error without room name', (done) ->
     should.throw () -> new AiEngine()
+    done()
+
+  it 'should throw error without topics', (done) ->
+    should.throw () -> new AiEngine 'Default'
     done()
 
   describe '#reply', () ->
@@ -43,7 +47,7 @@ describe 'AIML engine', () ->
 
     beforeEach (done) ->
       parse xml, (err, topics) ->
-        engine = new AiEngine topics, {name: 'Jonny'}
+        engine = new AiEngine 'Default', topics, {name: 'Jonny'}
         done()
 
     it 'should not responce for unknown message', (done) ->

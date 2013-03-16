@@ -8,7 +8,7 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
               <category>
                 <pattern>what is your name</pattern>
                 <that>bot</that>
-                <template><![CDATA[My name is Jonny.]]></template>
+                <template><![CDATA[My name is Jonny.]]><unknowntag>88888</unknowntag></template>
               </category>
               <topic name=\"Development\">
                <category>

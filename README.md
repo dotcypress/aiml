@@ -3,13 +3,11 @@ AIML [![Build Status](https://secure.travis-ci.org/dotCypress/aiml.png?branch=ma
 
 [Artificial Intelligence Markup Language](http://en.wikipedia.org/wiki/AIML "Artificial Intelligence Markup Language") lib for Node.js
 
-## Installation
+## Usage
+
+### Installation
 
 `npm install aiml`
-
-`var aiml = require('aiml')`
-
-## API
 
 ### Parser
 
@@ -46,9 +44,7 @@ aiml.parseFile('sample.aiml', function(err, topics){
   var responce = engine.reply({name: 'Billy'}, "Hi, dude", function(err, responce){
     console.log(responce);
   });
-
 });
-
 ```
 
 ## Supported features in current release

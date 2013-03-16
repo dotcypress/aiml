@@ -11,7 +11,7 @@ class AiEngine
     @view = {bot: botData}
     _.forEach @topics, (topic) =>
       _.forEach topic.categories, (category) =>
-        category["room:#{@roomName}"] = new RegExp (category.pattern.replace '*', '(.+)'), "i"
+        category["room:#{@roomName}"] = new RegExp (category.pattern.replace '*', '(.*)'), "i"
 
 
   getCurrentTopic: () ->
@@ -21,11 +21,11 @@ class AiEngine
     topic = @getCurrentTopic()
     _.find topic.categories, (category) => category["room:#{@roomName}"].test message
 
-  reply: (author, message, cb) ->
+  reply: (authorData, message, cb) ->
     category = @findCategory message
     return cb null if not category
     match = category["room:#{@roomName}"].exec message
-    @view.star = match[1]
+    @view.star = match[1] if match and match.length > 0
     responce = mustache.render category.templates[0], @view
     cb null, responce
 

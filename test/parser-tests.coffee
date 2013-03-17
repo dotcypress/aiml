@@ -46,6 +46,14 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                 <pattern>how old are you</pattern>
                 <template><srai>you age</srai></template>
               </category>
+              <category>
+                <pattern>lets talk about *</pattern>
+                <template><set name=\"subject\"><star/></set>ok</template>
+              </category>
+              <category>
+                <pattern>what the subject</pattern>
+                <template>Subject is <get name=\"subject\"/></template>
+              </category>
             </aiml>"
 
 describe 'AIML parser', () ->
@@ -64,7 +72,7 @@ describe 'AIML parser', () ->
     parse xml, (err, topics) ->
       should.not.exist err
       topics.should.have.length 2
-      topics[0].categories.should.have.length 4
+      topics[0].categories.should.have.length 6
       should.not.exist topics[0].name
       topics[1].name.should.equal 'Development'
       done()
@@ -102,4 +110,11 @@ describe 'AIML parser', () ->
       category = topics[0].categories[3]
       category.pattern.should.equal 'how old are you'
       category.template.link.should.equal 'you age'
+      done()
+
+  it.skip 'should parse setters', (done) ->
+    parse xml, (err, topics) ->
+      category = topics[0].categories[4]
+      category.pattern.should.equal 'lets talk about *'
+      category.template.text.should.equal '{{set(\'subject\', star)}}ok'
       done()

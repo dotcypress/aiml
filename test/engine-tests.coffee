@@ -21,6 +21,14 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                 <pattern>how old are you</pattern>
                 <template><srai>you age</srai></template>
               </category>
+              <category>
+                <pattern>lets talk about *</pattern>
+                <template><set name=\"subject\"><star/></set></template>
+              </category>
+              <category>
+                <pattern>what the subject</pattern>
+                <template>Subject is <get name=\"subject\"/></template>
+              </category>
               <topic name=\"Development\">
                <category>
                   <pattern><bot name=\"name\"/>, how are yoy</pattern>

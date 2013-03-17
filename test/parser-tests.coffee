@@ -16,19 +16,35 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   <template>My name is <bot name=\"name\"/> and i prefer F#.</template>
                 </category>
                 <category>
-                  <pattern><bot name=\"name\"/>, what is your preffered programming language</pattern>
+                  <pattern><bot name=\"name\"/>, what is best programming language</pattern>
                   <template>
                     <random>
-                      <li>My name is <bot name=\"name\"/> and i prefer F#.</li>
-                      <li>Only Haskell</li>
-                      <li>Maybe OCaml</li>
+                      <li>
+                        <random>
+                          <li>Only</li>
+                          <li>Maybe</li>
+                          <li>Not</li>
+                        </random>
+                      </li>
+                      <li>C#</li>
+                      <li>F#</li>
+                      <li>js</li>
                     </random>
+                    <think></think>
                   </template>
                 </category>
               </topic>
               <category>
                 <pattern>do you like *</pattern>
                 <template><star/>? Maybe.</template>
+              </category>
+              <category>
+                <pattern>you age</pattern>
+                <template><bot name=\"age\"/></template>
+              </category>
+              <category>
+                <pattern>how old are you</pattern>
+                <template><srai>you age</srai></template>
               </category>
             </aiml>"
 
@@ -48,6 +64,7 @@ describe 'AIML parser', () ->
     parse xml, (err, topics) ->
       should.not.exist err
       topics.should.have.length 2
+      topics[0].categories.should.have.length 4
       should.not.exist topics[0].name
       topics[1].name.should.equal 'Development'
       done()
@@ -55,11 +72,10 @@ describe 'AIML parser', () ->
   it 'should parse simple category', (done) ->
     parse xml, (err, topics) ->
       topic = topics[0]
-      topic.categories.should.have.length 2
       category = topic.categories[0]
       category.pattern.should.equal 'what is your name'
       category.that.should.equal 'bot'
-      category.template.should.equal 'My name is Jonny.'
+      category.template.text.should.equal 'My name is Jonny.'
       done()
 
   it 'should parse bot predicate in pattern', (done) ->
@@ -71,12 +87,19 @@ describe 'AIML parser', () ->
   it 'should parse bot predicate in templates', (done) ->
     parse xml, (err, topics) ->
       category = topics[1].categories[0]
-      category.template.should.equal 'My name is {{bot.name}} and i prefer F#.'
+      category.template.text.should.equal 'My name is {{bot.name}} and i prefer F#.'
       done()
 
   it 'should parse stars', (done) ->
     parse xml, (err, topics) ->
       category = topics[0].categories[1]
       category.pattern.should.equal 'do you like *'
-      category.template.should.equal '{{star}}? Maybe.'
+      category.template.text.should.equal '{{star}}? Maybe.'
+      done()
+
+  it 'should parse catergory reference', (done) ->
+    parse xml, (err, topics) ->
+      category = topics[0].categories[3]
+      category.pattern.should.equal 'how old are you'
+      category.template.link.should.equal 'you age'
       done()

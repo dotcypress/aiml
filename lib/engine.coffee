@@ -23,9 +23,10 @@ class AiEngine
   reply: (authorData, message, cb) ->
     category = @findCategory message
     return cb null unless category
+    return @reply authorData, category.template.link, cb if category.template?.link
     match = category["room:#{@roomName}"].exec message
     @view.star = match[1] if match and match.length > 0
-    responce = mustache.render category.template, @view
+    responce = mustache.render category.template.text, @view
     cb null, responce
 
 module.exports = AiEngine

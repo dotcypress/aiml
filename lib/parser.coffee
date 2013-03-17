@@ -70,7 +70,11 @@ parsePatternExpression = (node) ->
 
 parseMixedTemplateContentContainer = (node) ->
   return undefined unless node
-  trim _.reduce node.children, ((acc, next) -> "#{acc}#{parseTemplateExpression next}"), ''
+  linkNode =  _.find node.children, (subNode) -> subNode.name is 'srai'
+  return link: linkNode.children[0].text if linkNode
+  simpleNodes = _.filter node.children, (subNode) ->
+    subNode.name is 'bot' or subNode.name is 'star' or subNode.text
+  text: trim _.reduce simpleNodes, ((acc, next) -> "#{acc}#{parseTemplateExpression next}"), ''
 
 parseTemplateExpression = (node) ->
   if node.name

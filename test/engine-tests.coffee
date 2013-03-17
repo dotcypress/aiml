@@ -13,6 +13,14 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                 <pattern>do you like *</pattern>
                 <template><star/>? Maybe.</template>
               </category>
+              <category>
+                <pattern>you age</pattern>
+                <template><bot name=\"age\"/></template>
+              </category>
+              <category>
+                <pattern>how old are you</pattern>
+                <template><srai>you age</srai></template>
+              </category>
               <topic name=\"Development\">
                <category>
                   <pattern><bot name=\"name\"/>, how are yoy</pattern>
@@ -47,7 +55,7 @@ describe 'AIML engine', () ->
 
     beforeEach (done) ->
       parse xml, (err, topics) ->
-        engine = new AiEngine 'Default', topics, {name: 'Jonny'}
+        engine = new AiEngine 'Default', topics, {name: 'Jonny', age: 21}
         done()
 
     it 'should not responce for unknown message', (done) ->
@@ -72,4 +80,10 @@ describe 'AIML engine', () ->
       engine.reply {name: 'Lisa'}, 'Dude, do you like bananas', (err, reply) ->
         should.exist reply
         reply.should.to.be.equal 'bananas? Maybe.'
+        done()
+
+    it 'should work with references', (done) ->
+      engine.reply {name: 'Lisa'}, 'how old are you?', (err, reply) ->
+        should.exist reply
+        reply.should.to.be.equal '21'
         done()

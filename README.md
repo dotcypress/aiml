@@ -55,6 +55,7 @@ aiml.parseFile('sample.aiml', function(err, topics){
 * Ctegory templates
  * `<bot name="*"/>`
  *  `*`
+ * `<srai>link</srai>`
 
 ## Contribute
 

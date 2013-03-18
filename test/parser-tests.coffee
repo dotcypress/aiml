@@ -109,7 +109,7 @@ describe 'AIML parser', () ->
       category.template.text.should.equal '{{star}}? Maybe.'
       done()
 
-  it 'should parse catergory reference', (done) ->
+  it 'should parse category reference', (done) ->
     parse xml, (err, topics) ->
       category = topics[0].categories[3]
       category.pattern.should.equal 'how old are you'

@@ -1,6 +1,6 @@
 {
   "name": "aiml",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Artificial Intelligence Markup Language lib for Node.js",
   "keywords": [
     "aiml",

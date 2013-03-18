@@ -56,6 +56,8 @@ aiml.parseFile('sample.aiml', function(err, topics){
  * `<bot name="*"/>`
  *  `*`
  * `<srai>link</srai>`
+ * `<get name="variable"/>`
+ * `<set name="variable">value</set>`
 
 ## Contribute
 

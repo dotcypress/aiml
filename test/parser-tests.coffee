@@ -47,8 +47,12 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                 <template><srai>you age</srai></template>
               </category>
               <category>
+                <pattern>lets chainge topic to Dev</pattern>
+                <template><set name=\"topic\">Development</set>ok</template>
+              </category>
+              <category>
                 <pattern>lets talk about *</pattern>
-                <template><set name=\"subject\"><star/></set>ok</template>
+                <template><set name=\"subject\"><star/> stuff</set>ok</template>
               </category>
               <category>
                 <pattern>what the subject</pattern>
@@ -72,7 +76,7 @@ describe 'AIML parser', () ->
     parse xml, (err, topics) ->
       should.not.exist err
       topics.should.have.length 2
-      topics[0].categories.should.have.length 6
+      topics[0].categories.should.have.length 7
       should.not.exist topics[0].name
       topics[1].name.should.equal 'Development'
       done()
@@ -112,9 +116,27 @@ describe 'AIML parser', () ->
       category.template.link.should.equal 'you age'
       done()
 
-  it.skip 'should parse setters', (done) ->
+  it 'should parse setters', (done) ->
     parse xml, (err, topics) ->
       category = topics[0].categories[4]
+      category.pattern.should.equal 'lets chainge topic to Dev'
+      category.template.text.should.equal 'ok'
+      should.exist category.template.do
+      category.template.do.should.be.a 'function'
+      done()
+
+  it 'should parse setters with star', (done) ->
+    parse xml, (err, topics) ->
+      category = topics[0].categories[5]
       category.pattern.should.equal 'lets talk about *'
-      category.template.text.should.equal '{{set(\'subject\', star)}}ok'
+      category.template.text.should.equal 'ok'
+      should.exist category.template.do
+      category.template.do.should.be.a 'function'
+      done()
+
+  it 'should parse getters', (done) ->
+    parse xml, (err, topics) ->
+      category = topics[0].categories[6]
+      category.pattern.should.equal 'what the subject'
+      category.template.text.should.equal 'Subject is {{subject}}'
       done()

@@ -22,8 +22,12 @@ xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                 <template><srai>you age</srai></template>
               </category>
               <category>
+                <pattern>lets chainge topic to Dev</pattern>
+                <template><set name=\"topic\">Development</set>ok</template>
+              </category>
+              <category>
                 <pattern>lets talk about *</pattern>
-                <template><set name=\"subject\"><star/></set></template>
+                <template><set name=\"subject\"><star/> stuff</set>ok</template>
               </category>
               <category>
                 <pattern>what the subject</pattern>
@@ -75,23 +79,46 @@ describe 'AIML engine', () ->
     it 'should responce to exact message', (done) ->
       engine.reply {name: 'Lisa'}, 'what is your name', (err, reply) ->
         should.exist reply
-        reply.should.to.be.equal 'My name is Jonny'
+        reply.should.be.equal 'My name is Jonny'
         done()
 
     it 'should responce to not exact message', (done) ->
       engine.reply {name: 'Lisa'}, 'Hey, what is your name?', (err, reply) ->
         should.exist reply
-        reply.should.to.be.equal 'My name is Jonny'
+        reply.should.be.equal 'My name is Jonny'
         done()
 
     it 'should responce with context', (done) ->
       engine.reply {name: 'Lisa'}, 'Dude, do you like bananas', (err, reply) ->
         should.exist reply
-        reply.should.to.be.equal 'bananas? Maybe.'
+        reply.should.be.equal 'bananas? Maybe.'
         done()
 
     it 'should work with references', (done) ->
       engine.reply {name: 'Lisa'}, 'how old are you?', (err, reply) ->
         should.exist reply
-        reply.should.to.be.equal '21'
+        reply.should.be.equal '21'
         done()
+
+    it 'should work with references', (done) ->
+      engine.reply {name: 'Lisa'}, 'how old are you?', (err, reply) ->
+        should.exist reply
+        reply.should.be.equal '21'
+        done()
+
+    it 'should work with setters ang getters', (done) ->
+      engine.reply {name: 'Lisa'}, 'lets chainge topic to Dev?', (err, reply) ->
+        should.exist reply
+        reply.should.be.equal 'ok'
+        should.exist engine.view.topic
+        engine.view.topic.should.be.equal 'Development'
+        done()
+
+    it 'should work with setters ang getters (with star)', (done) ->
+      engine.reply {name: 'Lisa'}, 'lets talk about js?', (err, reply) ->
+        should.exist reply
+        reply.should.be.equal 'ok'
+        engine.reply {name: 'Lisa'}, 'what the subject?', (err, reply) ->
+          should.exist reply
+          reply.should.be.equal 'Subject is js stuff'
+          done()

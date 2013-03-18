@@ -3,6 +3,7 @@ path = require 'path'
 _ = require 'underscore'
 async = require 'async'
 DomJS = require("dom-js").DomJS
+mustache = require 'mustache'
 engine = require './engine'
 
 parse = (xml, cb) ->
@@ -72,16 +73,26 @@ parseMixedTemplateContentContainer = (node) ->
   return undefined unless node
   linkNode =  _.find node.children, (subNode) -> subNode.name is 'srai'
   return link: linkNode.children[0].text if linkNode
+  setterNode =  _.find node.children, (subNode) -> subNode.name is 'set'
   simpleNodes = _.filter node.children, (subNode) ->
     subNode.name is 'bot' or subNode.name is 'star' or subNode.text
   text: trim _.reduce simpleNodes, ((acc, next) -> "#{acc}#{parseTemplateExpression next}"), ''
+  do:   processSetter setterNode if setterNode
 
 parseTemplateExpression = (node) ->
   if node.name
     return "{{bot.#{node.attributes.name}}}" if node.name is 'bot'
     return "{{star}}" if node.name is 'star'
+    return "{{#{node.attributes.name}}}" if node.name is 'get'
     return ''
   node.text
+
+processSetter = (node) ->
+  value = parseMixedTemplateContentContainer node
+  content = value.text
+  if (content.indexOf '{{star}}') != -1
+    return (state, star) -> state[node.attributes.name] = mustache.render content, {star: star}
+  (state) -> state[node.attributes.name] = content
 
 trim = (string) -> string.replace /^\s+|\s+$/g, ''
 
